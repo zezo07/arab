@@ -1,4 +1,4 @@
-package com.shahid4u
+package com.movizland
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.lagradost.cloudstream3.app
@@ -6,6 +6,7 @@ import com.lagradost.cloudstream3.utils.AppUtils.tryParseJson
 import com.lagradost.cloudstream3.utils.ExtractorApi
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.getQualityFromName
+import com.lagradost.cloudstream3.utils.Qualities
 
 open class JWPlayer : ExtractorApi() {
     override val name = "JWPlayer"
@@ -18,10 +19,7 @@ open class JWPlayer : ExtractorApi() {
             val data = this.select("script").mapNotNull { script ->
                 if (script.data().contains("sources: [")) {
                     script.data().substringAfter("sources: [")
-                        .substringBefore("],").replace("'", "\"")
-                } else if (script.data().contains("otakudesu('")) {
-                    script.data().substringAfter("otakudesu('")
-                        .substringBefore("');")
+                        .substringBefore("],").replace("file", "\"file\"").replace("label", "\"label\"")
                 } else {
                     null
                 }
@@ -34,13 +32,10 @@ open class JWPlayer : ExtractorApi() {
                         name,
                         it.file,
                         referer = url,
-                        quality = getQualityFromName(
-                            Regex("(\\d{3,4}p)").find(it.file)?.groupValues?.get(
-                                1
-                            )
+                        quality = getQualityFromName(it.label) ?: Qualities.Unknown.value,
+                        isM3u8 = if(it.file.endsWith(".m3u8")) true else false
                         )
                     )
-                )
             }
         }
         return sources
@@ -53,11 +48,12 @@ open class JWPlayer : ExtractorApi() {
     )
 
 }
-class VidHD : JWPlayer() {
-    override val name = "VidHD"
-    override val mainUrl = "https://vidhd.fun"
+
+class Vadbam : JWPlayer() {
+    override val name = "Vadbam"
+    override val mainUrl = "https://vadbam.com/"
 }
-class Vidbom : JWPlayer() {
-    override val name = "Vidbom"
-    override val mainUrl = "https://vidbom.com"
+class Vidshar : JWPlayer() {
+    override val name = "Vidshar"
+    override val mainUrl = "https://vidshar.org/"
 }
