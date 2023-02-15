@@ -1,6 +1,7 @@
 package com.movizland
 
 
+import android.annotation.SuppressLint
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.utils.ExtractorLink
@@ -71,6 +72,7 @@ class Movizland : MainAPI() {
         return newHomePageResponse(request.name, list)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override suspend fun search(query: String): List<SearchResponse> {
         val q = query.replace(" ".toRegex(), "%20")
         val result = arrayListOf<SearchResponse>()

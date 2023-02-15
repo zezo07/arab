@@ -5,6 +5,7 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.utils.AppUtils.parseJson
 import com.lagradost.cloudstream3.utils.ExtractorLink
+import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
@@ -308,8 +309,12 @@ class MyCima : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-        app.get(data).document
-            .select("ul.List--Download--Mycima--Single:nth-child(2) li").map {
+        val doc = app.get(data).document
+        doc.select(".WatchServersList > ul > li").apmap {
+            val url = it.select("btn").attr("data-url")
+            loadExtractor(url, data, subtitleCallback, callback)
+        }
+        doc.select("ul.List--Download--Mycima--Single:nth-child(2) li").apmap {
                 it.select("a").map { linkElement ->
                     callback.invoke(
                         ExtractorLink(

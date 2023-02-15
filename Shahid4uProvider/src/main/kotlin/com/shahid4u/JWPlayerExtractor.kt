@@ -53,7 +53,7 @@ open class JWPlayer : ExtractorApi() {
     )
 
 }
-class VidHD : JWPlayer() {
+class VidHDJW : JWPlayer() {
     override val name = "VidHD"
     override val mainUrl = "https://vidhd.fun"
 }

@@ -7,8 +7,8 @@ import android.content.Context
 class Shahid4uPlugin: Plugin() {
     override fun load(context: Context) {
         registerMainAPI(Shahid4u())
+        registerExtractorAPI(VidHDJW())
         registerExtractorAPI(VidHD())
         registerExtractorAPI(GoStream())
-        registerExtractorAPI(Vidbom())
     }
 }
