@@ -1,10 +1,4 @@
-plugins {
-    id("org.jetbrains.kotlin.android")
-}
 version = 1
-dependencies {
-    implementation("androidx.core:core-ktx:+")
-}
 
 cloudstream {
     description = ""
