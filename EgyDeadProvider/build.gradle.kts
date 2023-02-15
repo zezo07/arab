@@ -1,4 +1,4 @@
-version = 2
+version = 3
 
 cloudstream {
     description = "Some LinkBox links are broken idk why"
