@@ -157,8 +157,8 @@ class EgyDead : MainAPI() {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         val doc = app.post(data, data = mapOf("View" to "1")).document
-        doc.select(".donwload-servers-list > li").apmap {
-            val url = it.select("a")
+        doc.select(".donwload-servers-list > li").apmap { element ->
+            val url = element.select("a").attr("href")
             if(url.contains("www.linkbox.to")) {
                 val apiUrl = "https://" + URI(url).host + "/api/file/detail?itemId=" + url.substringAfter("/file/")
                 val json = app.get(apiUrl).parsed<LinkBox>()
@@ -169,7 +169,7 @@ class EgyDead : MainAPI() {
                             "LinkBox " + bytesToHumanReadableSize(it.size ?: 0.0),
                             it.url ?: return@forEach,
                             mainUrl,
-                            it.resolution.replace("p",""),
+                            it.resolution?.replace("p","")?.toInt() ?: Qualities.Unknown.value,
                             false
                         )
                     )

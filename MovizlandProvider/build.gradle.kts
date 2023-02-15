@@ -1,4 +1,10 @@
+plugins {
+    id("org.jetbrains.kotlin.android")
+}
 version = 5
+dependencies {
+    implementation("androidx.core:core-ktx:+")
+}
 
 cloudstream {
     description = "Not recommended for series."
