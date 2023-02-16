@@ -184,31 +184,6 @@ class ArabSeed : MainAPI() {
                             !sourceElement.attr("type").contains("mp4")
                         )
                     )
-                } else if (iframeUrl.contains("voe.sx")) {
-                    val doc = app.get(iframeUrl).document
-                    val script = doc.select("script").map { it.data() }.first { it.contains("sources") }
-                    val m3u8 = script.substringAfter("'hls': '").substringBefore("'")
-                    val mp4 = script.substringAfter("'mp4': '").substringBefore("'")
-                    val voeSxquality = script.substringAfter("'video_height': ").substringBefore(",").toInt()
-                    callback.invoke(
-                        ExtractorLink(
-                            this.name,
-                            "Voe.sx m3u8",
-                            m3u8,
-                            data,
-                            voeSxquality,
-                            true
-                        )
-                    )
-                    callback.invoke(
-                        ExtractorLink(
-                            this.name,
-                            "Voe.sx mp4",
-                            mp4,
-                            data,
-                            voeSxquality,
-                        )
-                    )
                 } else loadExtractor(iframeUrl, data, subtitleCallback, callback)
             }
         }

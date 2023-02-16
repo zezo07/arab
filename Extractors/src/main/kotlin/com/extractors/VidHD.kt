@@ -1,4 +1,4 @@
-package com.shahid4u
+package com.extractors
 
 import com.lagradost.cloudstream3.utils.ExtractorApi
 import com.lagradost.cloudstream3.utils.ExtractorLink

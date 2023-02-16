@@ -1,13 +1,10 @@
 package com.egydead
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.utils.ExtractorLink
-import com.lagradost.cloudstream3.utils.Qualities
 import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.nodes.Element
-import java.net.URI
 
 class EgyDead : MainAPI() {
     override var lang = "ar"
@@ -127,29 +124,6 @@ class EgyDead : MainAPI() {
             }
         }
     }
-    data class LinkBox (
-        @JsonProperty("data"   ) var data   : Data? = Data(),
-    )
-    data class Data (
-        @JsonProperty("itemInfo"  ) var itemInfo  : ItemInfo? = ItemInfo(),
-    )
-    data class ItemInfo (
-        @JsonProperty("resolutionList" ) var resolutionList : ArrayList<ResolutionList> = arrayListOf(),
-    )
-    data class ResolutionList (
-
-        @JsonProperty("resolution" ) var resolution : String? = null,
-        @JsonProperty("size"       ) var size       : Double?    = null,
-        @JsonProperty("sub_type"   ) var subType    : String? = null,
-        @JsonProperty("url"        ) var url        : String? = null,
-
-    )
-    private fun bytesToHumanReadableSize(bytes: Double) = when {
-        bytes >= 1 shl 30 -> "%.1f GB".format(bytes / (1 shl 30))
-        bytes >= 1 shl 20 -> "%.1f MB".format(bytes / (1 shl 20))
-        bytes >= 1 shl 10 -> "%.0f kB".format(bytes / (1 shl 10))
-        else -> "$bytes bytes"
-    }
     override suspend fun loadLinks(
         data: String,
         isCasting: Boolean,
@@ -159,44 +133,12 @@ class EgyDead : MainAPI() {
         val doc = app.post(data, data = mapOf("View" to "1")).document
         doc.select(".donwload-servers-list > li").apmap { element ->
             val url = element.select("a").attr("href")
-            if(url.contains("www.linkbox.to")) {
-                val apiUrl = "https://" + URI(url).host + "/api/file/detail?itemId=" + url.substringAfter("/file/")
-                val json = app.get(apiUrl).parsed<LinkBox>()
-                json.data?.itemInfo?.resolutionList?.forEach {
-                    callback.invoke(
-                        ExtractorLink(
-                            this.name,
-                            "LinkBox " + bytesToHumanReadableSize(it.size ?: 0.0),
-                            it.url ?: return@forEach,
-                            mainUrl,
-                            it.resolution?.replace("p","")?.toInt() ?: Qualities.Unknown.value,
-                            false
-                        )
-                    )
-                }
-            } else loadExtractor(url, data, subtitleCallback, callback)
+            println(url)
+            loadExtractor(url, data, subtitleCallback, callback)
         }
-        val watchList = doc.select("ul.serversList > li")
-        watchList.apmap { li ->
+        doc.select("ul.serversList > li").apmap { li ->
             val iframeUrl = li.attr("data-link")
-            val quality = li.select("small").text().getIntFromText() ?: Qualities.Unknown.value
-            if(iframeUrl.contains("www.linkbox.to")) {
-                val apiUrl = "https://" + URI(iframeUrl).host + "/api/file/detail?itemId=" + iframeUrl.substringAfter("id=").substringBefore("&")
-                val json = app.get(apiUrl).parsed<LinkBox>()
-                json.data?.itemInfo?.resolutionList?.forEach {
-                    callback.invoke(
-                        ExtractorLink(
-                            this.name,
-                            "LinkBox " + bytesToHumanReadableSize(it.size ?: 0.0),
-                            it.url ?: return@forEach,
-                            mainUrl,
-                            quality,
-                            false
-                        )
-                    )
-                }
-            }
-            else loadExtractor(iframeUrl, data, subtitleCallback, callback)
+            loadExtractor(iframeUrl, data, subtitleCallback, callback)
         }
         return true
     }

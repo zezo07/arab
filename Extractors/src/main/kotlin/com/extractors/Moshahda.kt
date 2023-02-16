@@ -1,9 +1,8 @@
-package com.movizland
+package com.extractors
 
 import com.lagradost.cloudstream3.utils.ExtractorApi
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.Qualities
-import com.lagradost.cloudstream3.app
 
 open class Moshahda : ExtractorApi() {
     override val name = "Moshahda"

@@ -7,9 +7,5 @@ import android.content.Context
 class MovizlandPlugin: Plugin() {
     override fun load(context: Context) {
         registerMainAPI(Movizland())
-        registerExtractorAPI(Govad())
-        registerExtractorAPI(Moshahda())
-        registerExtractorAPI(Vadbam())
-        registerExtractorAPI(Vidshar())
     }
 }
