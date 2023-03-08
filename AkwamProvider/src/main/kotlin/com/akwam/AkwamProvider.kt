@@ -9,7 +9,7 @@ import org.jsoup.nodes.Element
 
 class Akwam : MainAPI() {
     override var lang = "ar"
-    override var mainUrl = "https://eg1.ak4eg.cam/"
+    override var mainUrl = "https://eg1.ak4eg.cam"
     override var name = "Akwam"
     override val usesWebView = false
     override val hasMainPage = true
