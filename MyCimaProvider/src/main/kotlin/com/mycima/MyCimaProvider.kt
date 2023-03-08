@@ -1,4 +1,4 @@
-package com.mycima
+package com.wecima
 
 
 import com.lagradost.cloudstream3.*
@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element
 class MyCima : MainAPI() {
     override var lang = "ar"
     override var mainUrl = "https://wecima.tube"
-    override var name = "MyCima"
+    override var name = "WeCima"
     override val usesWebView = false
     override val hasMainPage = true
     override val supportedTypes = setOf(TvType.TvSeries, TvType.Movie, TvType.Anime)
@@ -38,7 +38,7 @@ class MyCima : MainAPI() {
         return MovieSearchResponse(
             title,
             url.attr("href"),
-            this@MyCima.name,
+            this@WeCima.name,
             if(url.attr("title").contains("فيلم")) TvType.Movie else TvType.TvSeries,
             posterUrl,
             year?.getIntFromText(),
