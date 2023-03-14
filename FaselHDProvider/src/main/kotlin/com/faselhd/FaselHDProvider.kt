@@ -44,9 +44,13 @@ class FaselHD : MainAPI() {
         )
     }
     override val mainPage = mainPageOf(
-            "$mainUrl/all-movies/page/" to "Movies",
-            "$mainUrl/series/page/" to "Series",
-            "$mainUrl/movies_top_imdb/page/" to "Top Movies IMDB",
+            "$mainUrl/all-movies/page/" to "جميع الافلام",
+            "$mainUrl/movies_top_views/page/" to "الافلام الاعلي مشاهدة",
+            "$mainUrl/dubbed-movies/page/" to "الأفلام المدبلجة",
+            "$mainUrl/movies_top_imdb/page/" to "الافلام الاعلي تقييما IMDB",
+            "$mainUrl/series/page/" to "مسلسلات",
+            "$mainUrl/recent_series/page/" to "المضاف حديثا",
+            "$mainUrl/anime/page/" to "الأنمي",
         )
 
     override suspend fun getMainPage(page: Int, request : MainPageRequest): HomePageResponse {
